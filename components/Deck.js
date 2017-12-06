@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
+import { AppLoading } from 'expo'
 
 import { formatDeckInfo } from '../utils/helpers'
 import DeckInfo from './DeckInfo'
 import TextButton from './TextButton'
 import { white, black } from '../utils/colors'
+import { getDeck } from '../utils/api'
 
 class DeckView extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -16,8 +18,25 @@ class DeckView extends Component {
     }
   }
 
+  state = {
+    deck: {}
+  }
+
+  componentDidMount() {
+    const { navigation } = this.props
+    const deckKey = navigation.state.params.deckKey
+
+    getDeck(deckKey)
+      .then(deck => this.setState(() => ({
+        deck
+      })))
+  }
+
   render() {
-    const { navigation, deckKey, deck } = this.props
+    const { navigation } = this.props
+    const { deck } = this.state
+
+    if (!Object.keys(deck).length) return <AppLoading />
 
     return (
       <View style={styles.container}>
@@ -26,13 +45,13 @@ class DeckView extends Component {
         <View style={styles.btnContainer}>
           <TextButton onPress={() => navigation.navigate(
             'NewQuestion',
-            { deckKey: deckKey }
+            { deckKey: deck.title }
           )} buttonStyle={styles.buttonStyle1} textColor={black}>
             Add Card
           </TextButton>
           <TextButton onPress={() => navigation.navigate(
             'NewQuestion',
-            { deckKey: deckKey }
+            { deckKey: deck.title }
           )} buttonStyle={styles.buttonStyle2} textColor={white}>
             Start Quiz
           </TextButton>
@@ -66,13 +85,4 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps (state, { navigation }) {
-  const { deckKey } = navigation.state.params
-
-  return {
-    deckKey,
-    deck: state[deckKey]
-  }
-}
-
-export default connect(mapStateToProps)(DeckView)
+export default DeckView

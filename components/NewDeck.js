@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 
 import TextButton from './TextButton'
 
-import { addDeck } from '../actions/actions';
-import { black, white } from '../utils/colors';
+import { addDeck } from '../utils/api'
+import { black, white } from '../utils/colors'
 
 class NewDeck extends Component {
   state = {
@@ -16,24 +16,22 @@ class NewDeck extends Component {
     this.setState({ title })
   }
 
-  toDeck = () => {
-    this.props.navigation.navigate(
-      'DeckView',
-      { deckKey: title }
-    )
+  toDeck = (title) => {
+    const { navigate } = this.props.navigation
+    return navigate("DeckView", {deckKey:title})
   }
 
   submit = () => {
     const { title } = this.state
-    const { add, toDeck } = this.props
+    // const { add, toDeck, navigation } = this.props
 
-    add(title)
+    addDeck(title)
 
     this.setState(() => ({
       title: ''
     }))
 
-    toDeck(title)
+    this.toDeck(title)
   }
 
   render() {
@@ -45,6 +43,7 @@ class NewDeck extends Component {
         <TextInput
           style={styles.textInput}
           placeholder='Title'
+          value={title}
           onChangeText={text => this.onChangeHandler(text)} 
         />
         <TextButton onPress={this.submit} buttonStyle={styles.buttonStyle} textColor={white}>
@@ -83,16 +82,4 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapDispatchToProps(dispatch, { navigation }) {
-  return {
-    add: (title) => dispatch(addDeck({
-        [title]: {title: title, questions: []}
-      })),
-    toDeck: (title) => navigation.navigate(
-      'DeckView',
-      { deckKey: title }
-    )
-  }
-}
-
-export default connect(null, mapDispatchToProps)(NewDeck)
+export default NewDeck

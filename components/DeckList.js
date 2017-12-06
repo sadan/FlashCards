@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Text, View, FlatList } from 'react-native'
-import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 
 import { getDecks } from '../utils/api'
@@ -15,7 +14,6 @@ class DeckList extends Component {
   componentDidMount() {
     getDecks()
       .then(decks => {
-        debugger
         this.setState(() => ({
           ready: true,
           decks
@@ -25,7 +23,6 @@ class DeckList extends Component {
 
   render() {
     const { ready, decks } = this.state
-
     if (!ready) {
       return <AppLoading />
     }
