@@ -11,6 +11,7 @@ import DeckView from './components/Deck'
 
 import reducer from './reducers/reducers'
 import { black, white } from './utils/colors'
+import NewQuestion from './components/NewQuestion';
 
 function CustomStatusBar ({ backgroundColor, ...props }) {
   return (
@@ -58,12 +59,19 @@ const MainNavigator = StackNavigator({
     screen: Tabs
   },
   DeckView: {
-    screen: DeckView,
+    screen: DeckView
+  },
+  NewQuestion: {
+    screen: NewQuestion,
     navigationOptions: {
-      headerTintColor: white,
-      headerStyle: {
-        backgroundColor: black
-      }
+      title: 'Add Card'
+    }
+  }
+}, {
+  navigationOptions: {
+    headerTintColor: white,
+    headerStyle: {
+      backgroundColor: black
     }
   }
 })
