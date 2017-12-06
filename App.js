@@ -7,6 +7,7 @@ import { Constants } from 'expo'
 
 import NewDeck from './components/NewDeck'
 import DeckList from './components/DeckList'
+import DeckView from './components/Deck'
 
 import reducer from './reducers/reducers'
 import { black, white } from './utils/colors'
@@ -52,13 +53,28 @@ const Tabs = TabNavigator({
   }
 })
 
+const MainNavigator = StackNavigator({
+  Home: {
+    screen: Tabs
+  },
+  DeckView: {
+    screen: DeckView,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: black
+      }
+    }
+  }
+})
+
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(reducer)}>
         <View style={{flex: 1}}>
           <CustomStatusBar backgroundColor={black} barStyle='light-content' />
-          <Tabs />
+          <MainNavigator />
         </View>
       </Provider>
     );

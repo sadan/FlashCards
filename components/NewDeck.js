@@ -13,17 +13,24 @@ class NewDeck extends Component {
     this.setState({ title })
   }
 
+  toDeck = () => {
+    this.props.navigation.navigate(
+      'DeckView',
+      { deckKey: title }
+    )
+  }
+
   submit = () => {
     const { title } = this.state
-    const { add } = this.props
+    const { add, toDeck } = this.props
 
-    this.props.dispatch(addDeck({
-      [title]: this.state
-    }))
+    add(title)
 
     this.setState(() => ({
       title: ''
     }))
+
+    toDeck(title)
   }
 
   render() {
@@ -37,7 +44,6 @@ class NewDeck extends Component {
           placeholder='Title'
           onChangeText={text => this.onChangeHandler(text)} 
         />
-        <Text>{title}</Text>
         <TouchableOpacity onPress={this.submit}>
           <Text>Submit</Text>
         </TouchableOpacity>
@@ -52,4 +58,16 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect()(NewDeck)
+function mapDispatchToProps(dispatch, { navigation }) {
+  return {
+    add: (title) => dispatch(addDeck({
+        [title]: {title: title, questions: []}
+      })),
+    toDeck: (title) => navigation.navigate(
+      'DeckView',
+      { deckKey: title }
+    )
+  }
+}
+
+export default connect(null, mapDispatchToProps)(NewDeck)
