@@ -8,10 +8,11 @@ import { Constants } from 'expo'
 import NewDeck from './components/NewDeck'
 import DeckList from './components/DeckList'
 import DeckView from './components/Deck'
+import NewQuestion from './components/NewQuestion'
+import Quiz from './components/Quiz'
 
 import reducer from './reducers/reducers'
 import { black, white } from './utils/colors'
-import NewQuestion from './components/NewQuestion';
 
 function CustomStatusBar ({ backgroundColor, ...props }) {
   return (
@@ -66,6 +67,9 @@ const MainNavigator = StackNavigator({
     navigationOptions: {
       title: 'Add Card'
     }
+  },
+  Quiz: {
+    screen: Quiz
   }
 }, {
   navigationOptions: {
