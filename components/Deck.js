@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { formatDeckInfo } from '../utils/helpers';
+
+import { formatDeckInfo } from '../utils/helpers'
+import DeckInfo from './DeckInfo'
 
 class DeckView extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -13,12 +15,11 @@ class DeckView extends Component {
   }
   render() {
     let { navigation, deckKey, deck } = this.props
-    let info = formatDeckInfo(deck)
 
     return (
       <View>
-        <Text>{info.title}</Text>
-        <Text>{info.cardsCount} cards</Text>
+        <DeckInfo deck={deck} />
+
         <View>
           <TouchableOpacity onPress={() => navigation.navigate(
             'NewQuestion',
