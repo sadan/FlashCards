@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
 
+import TextButton from './TextButton'
+
 import { addDeck } from '../actions/actions';
 import { black, white } from '../utils/colors';
 
@@ -45,9 +47,9 @@ class NewDeck extends Component {
           placeholder='Title'
           onChangeText={text => this.onChangeHandler(text)} 
         />
-        <TouchableOpacity style={styles.submitBtn} onPress={this.submit}>
-          <Text style={{ fontSize: 24, color: white }}>Submit</Text>
-        </TouchableOpacity>
+        <TextButton onPress={this.submit} buttonStyle={styles.buttonStyle} textColor={white}>
+          Submit
+        </TextButton>
       </KeyboardAvoidingView>
     )
   }
@@ -74,13 +76,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 5
   },
-  submitBtn: {
+  buttonStyle: {
     paddingLeft: 30,
     paddingRight: 30,
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: black,
-    borderRadius: 3,
+    backgroundColor: black
   }
 })
 
