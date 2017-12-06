@@ -1,13 +1,34 @@
 import React, { Component } from 'react'
 import { Text, View, FlatList } from 'react-native'
 import { connect } from 'react-redux'
+import { AppLoading } from 'expo'
 
 import { getDecks } from '../utils/api'
 import DeckInfo from './DeckInfo'
 
 class DeckList extends Component {
+  state = {
+    ready: false,
+    decks: {}
+  }
+
+  componentDidMount() {
+    getDecks()
+      .then(decks => {
+        debugger
+        this.setState(() => ({
+          ready: true,
+          decks
+        }))
+      })
+  }
+
   render() {
-    let { decks } = this.props
+    const { ready, decks } = this.state
+
+    if (!ready) {
+      return <AppLoading />
+    }
     return (
       <View>
         {typeof decks !== 'undefined'
@@ -22,10 +43,4 @@ class DeckList extends Component {
   }
 }
 
-function mapStateToProps (decks) {
-  return {
-    decks
-  }
-}
-
-export default connect(mapStateToProps)(DeckList)
+export default DeckList

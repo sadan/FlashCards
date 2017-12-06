@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { formatDeckInfo } from '../utils/helpers'
 import DeckInfo from './DeckInfo'
 import TextButton from './TextButton'
-import { white, black } from '../utils/colors';
+import { white, black } from '../utils/colors'
 
 class DeckView extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -15,8 +15,9 @@ class DeckView extends Component {
       title: deckKey
     }
   }
+
   render() {
-    let { navigation, deckKey, deck } = this.props
+    const { navigation, deckKey, deck } = this.props
 
     return (
       <View style={styles.container}>
