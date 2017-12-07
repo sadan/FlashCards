@@ -1,7 +1,5 @@
 import React from 'react'
 import { StyleSheet, Text, View, StatusBar } from 'react-native'
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import { Constants } from 'expo'
 
@@ -11,8 +9,8 @@ import DeckView from './components/Deck'
 import NewQuestion from './components/NewQuestion'
 import Quiz from './components/Quiz'
 
-import reducer from './reducers/reducers'
 import { black, white } from './utils/colors'
+import { setLocalNotification } from './utils/helpers'
 
 function CustomStatusBar ({ backgroundColor, ...props }) {
   return (
@@ -81,14 +79,16 @@ const MainNavigator = StackNavigator({
 })
 
 export default class App extends React.Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
+
   render() {
     return (
-      <Provider store={createStore(reducer)}>
-        <View style={{flex: 1}}>
-          <CustomStatusBar backgroundColor={black} barStyle='light-content' />
-          <MainNavigator />
-        </View>
-      </Provider>
+      <View style={{flex: 1}}>
+        <CustomStatusBar backgroundColor={black} barStyle='light-content' />
+        <MainNavigator />
+      </View>
     );
   }
 }

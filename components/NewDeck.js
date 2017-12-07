@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import { connect } from 'react-redux'
 
 import TextButton from './TextButton'
 
 import { saveDeckTitle } from '../utils/api'
 import { black, white } from '../utils/colors'
-import { addDeck } from '../actions/actions';
 
 class NewDeck extends Component {
   state = {

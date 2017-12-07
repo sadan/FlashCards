@@ -2,7 +2,6 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 import { formatDeckInfo } from '../utils/helpers'
-import { style } from 'expo/src/Font';
 
 export default function DeckInfo ({ deck }) {
   let info = formatDeckInfo(deck)

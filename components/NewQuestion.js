@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from 'react-native'
-import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 
-import { addQuestion } from '../actions/actions'
 import TextButton from './TextButton'
-import { white, black } from '../utils/colors';
-import { addCardToDeck } from '../utils/api';
+import { white, black } from '../utils/colors'
+import { addCardToDeck } from '../utils/api'
 
 class NewQuestion extends Component {
   state = {
@@ -82,16 +80,4 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapDispatchToProps (dispatch, { navigation }) {
-  const deckKey = navigation.state.params.deckKey
-
-  return {
-    add: (question) => dispatch(addQuestion({
-      deckKey: deckKey,
-      question: question
-    })),
-    goBack: () => navigation.goBack()
-  }
-}
-
-export default connect(null, mapDispatchToProps)(NewQuestion)
+export default NewQuestion

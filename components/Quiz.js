@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native'
-import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 
 import { getDeck } from '../utils/api'
 import { white } from '../utils/colors'
 import TextButton from './TextButton'
 import Question from './Question'
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
 class Quiz extends Component {
   state = {
@@ -26,6 +26,15 @@ class Quiz extends Component {
         ready: true,
         deck
       })))
+  }
+
+  clearNotification = () => {
+    const { current } = this.state
+
+    if (current === null) {
+      clearLocalNotification()
+        .then(setLocalNotification)
+    }
   }
 
   onCorrect = () => {
@@ -71,14 +80,14 @@ class Quiz extends Component {
                   <TextButton onPress={this.onCorrect} buttonStyle={styles.correctButton} textColor={white}>
                     Correct
                   </TextButton>
-                  <TextButton onPress={this.onCorrect} buttonStyle={styles.incorrectButton} textColor={white}>
+                  <TextButton onPress={this.onIncorrect} buttonStyle={styles.incorrectButton} textColor={white}>
                     Incorrect
                   </TextButton>
                 </View>
               </View>
 
             </View>
-          : <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
+          : <View onPress={this.clearNotification()} style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
               <Text>Percentage Correct: {percentageCorrect}</Text>
             </View>
         }

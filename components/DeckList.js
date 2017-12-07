@@ -1,10 +1,17 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native'
+import { 
+  Text, 
+  View,
+  FlatList, 
+  StyleSheet, 
+  TouchableOpacity, 
+  RefreshControl 
+} from 'react-native'
 import { AppLoading } from 'expo'
 
 import { getDecks } from '../utils/api'
 import DeckInfo from './DeckInfo'
-import { white } from '../utils/colors';
+import { white } from '../utils/colors'
 
 class DeckList extends Component {
   state = {
