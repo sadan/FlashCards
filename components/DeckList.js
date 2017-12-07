@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, View, FlatList, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native'
 import { AppLoading } from 'expo'
 
 import { getDecks } from '../utils/api'
@@ -9,7 +9,8 @@ import { white } from '../utils/colors';
 class DeckList extends Component {
   state = {
     ready: false,
-    decks: {}
+    decks: {},
+    refresh: false
   }
 
   componentDidMount() {
@@ -22,9 +23,21 @@ class DeckList extends Component {
     })
   }
 
+  refresh = () => {
+    this.setState({ refresh: true })
+    getDecks()
+    .then(decks => {
+      this.setState(() => ({
+        refresh: false,
+        ready: true,
+        decks
+      }))
+    })
+  }
+
   render() {
     const { navigate } = this.props.navigation
-    const { ready, decks } = this.state
+    const { ready, decks, refresh } = this.state
 
     if (!ready) {
       return <AppLoading />
@@ -34,6 +47,9 @@ class DeckList extends Component {
       <View>
         {decks
           ? <FlatList
+              refreshControl={
+                <RefreshControl refreshing={refresh} onRefresh={this.refresh} />
+              }
               data={Object.keys(decks).map((key) => decks[key])}
               renderItem={({item}) => (
                 <TouchableOpacity style={styles.item} onPress={() => navigate(
