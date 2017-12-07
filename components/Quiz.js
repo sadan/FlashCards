@@ -1,27 +1,16 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 
 import { getDeck } from '../utils/api'
 import { white } from '../utils/colors'
 import TextButton from './TextButton'
-
-function Question ({ onPress, text, subText, style={} }) {
-  return (
-    <View style={style}>
-      <Text style={{ fontSize: 36, textAlign: 'center' }}>{text}</Text>
-      <TouchableOpacity onPress={onPress}>
-        <Text style={{ fontSize: 20, color: '#ff0000'}}>{subText}</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
+import Question from './Question'
 
 class Quiz extends Component {
   state = {
     deck: {},
-    showAnswer: false,
     current: 0,
     correct: 0,
     total: 0
@@ -58,14 +47,8 @@ class Quiz extends Component {
     }))
   }
 
-  onShowAnswer = () => {
-    this.setState((state) => ({
-      showAnswer: !state.showAnswer
-    }))
-  }
-
   render() {
-    const { deck, current, correct, total, showAnswer } = this.state
+    const { deck, current, correct, total } = this.state
 
     if (!Object.keys(deck).length) {
       return <AppLoading />
@@ -82,20 +65,7 @@ class Quiz extends Component {
               </View>
 
               <View style={styles.innerContainer}>
-                {!showAnswer
-                  ?
-                  <Question 
-                    onPress={this.onShowAnswer} 
-                    style={styles.question} 
-                    text={deck.questions[current].question}
-                    subText='Answer' />
-                  :
-                  <Question 
-                    onPress={this.onShowAnswer} 
-                    style={styles.question} 
-                    text={deck.questions[current].answer}
-                    subText='Question' />                               
-                }
+                <Question question={deck.questions[current]} />
 
                 <View style={{justifyContent: 'flex-end',}}>
                   <TextButton onPress={this.onCorrect} buttonStyle={styles.correctButton} textColor={white}>
@@ -133,11 +103,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     flexDirection: 'row',
     marginBottom: 10,
-  },
-  question: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20
   },
   correctButton: {
     alignSelf: 'stretch',
