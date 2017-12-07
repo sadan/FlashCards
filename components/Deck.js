@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
-import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 
 import { formatDeckInfo } from '../utils/helpers'
@@ -32,8 +31,15 @@ class DeckView extends Component {
       })))
   }
 
+  refresh = (title) => {
+    getDeck(title)
+      .then(deck => this.setState(() => ({
+        deck
+      })))
+  }
+
   render() {
-    const { navigation } = this.props
+    const { navigate } = this.props.navigation
     const { deck } = this.state
 
     if (!Object.keys(deck).length) return <AppLoading />
@@ -43,14 +49,17 @@ class DeckView extends Component {
         <DeckInfo deck={deck} />
 
         <View style={styles.btnContainer}>
-          <TextButton onPress={() => navigation.navigate(
+          <TextButton onPress={() => navigate(
             'NewQuestion',
-            { deckKey: deck.title }
+            { 
+              deckKey: deck.title,
+              refresh: this.refresh
+            }
           )} buttonStyle={styles.buttonStyle1} textColor={black}>
             Add Card
           </TextButton>
-          <TextButton onPress={() => navigation.navigate(
-            'NewQuestion',
+          <TextButton onPress={() => navigate(
+            'Quiz',
             { deckKey: deck.title }
           )} buttonStyle={styles.buttonStyle2} textColor={white}>
             Start Quiz

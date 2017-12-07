@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 
 import TextButton from './TextButton'
 
-import { addDeck } from '../utils/api'
+import { saveDeckTitle } from '../utils/api'
 import { black, white } from '../utils/colors'
+import { addDeck } from '../actions/actions';
 
 class NewDeck extends Component {
   state = {
@@ -23,9 +24,8 @@ class NewDeck extends Component {
 
   submit = () => {
     const { title } = this.state
-    // const { add, toDeck, navigation } = this.props
 
-    addDeck(title)
+    saveDeckTitle(title)
 
     this.setState(() => ({
       title: ''

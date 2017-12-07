@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
+import { NavigationActions } from 'react-navigation'
 
 import { addQuestion } from '../actions/actions'
 import TextButton from './TextButton'
 import { white, black } from '../utils/colors';
+import { addCardToDeck } from '../utils/api';
 
 class NewQuestion extends Component {
   state = {
@@ -25,11 +27,16 @@ class NewQuestion extends Component {
   }
 
   submit = () => {
-    const { question, answer } = this.state
-    const { add, goBack } = this.props
+    const { deckKey, refresh } = this.props.navigation.state.params
 
-    add(this.state)
-    goBack()
+    addCardToDeck(deckKey, this.state)
+      .then(status => refresh(deckKey))
+
+    this.goBack()
+  }
+
+  goBack = () => {
+    this.props.navigation.goBack()
   }
 
   render() {
