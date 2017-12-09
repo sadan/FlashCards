@@ -6,6 +6,7 @@ import { getDeck } from '../utils/api'
 import { white } from '../utils/colors'
 import TextButton from './TextButton'
 import Question from './Question'
+import Score from './Score'
 import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
 class Quiz extends Component {
@@ -17,13 +18,18 @@ class Quiz extends Component {
   }
 
   componentDidMount() {
+    this.refresh()
+  }
+
+  refresh = () => {
     const { navigation } = this.props
     const deckKey = navigation.state.params.deckKey
 
     getDeck(deckKey)
       .then(deck => this.setState(() => ({
         total: deck.questions.length,
-        ready: true,
+        current: 0,
+        correct: 0,
         deck
       })))
   }
@@ -31,6 +37,7 @@ class Quiz extends Component {
   clearNotification = () => {
     const { current } = this.state
 
+    debugger
     if (current === null) {
       clearLocalNotification()
         .then(setLocalNotification)
@@ -87,9 +94,12 @@ class Quiz extends Component {
               </View>
 
             </View>
-          : <View onPress={this.clearNotification()} style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
-              <Text>Percentage Correct: {percentageCorrect}</Text>
-            </View>
+          : <Score navigation={ this.props.navigation }
+              onPress={ this.clearNotification() }
+              percentage={percentageCorrect}
+              deckKey={deck.title}
+              refresh={this.refresh}
+            />
         }
       </View>
     )
