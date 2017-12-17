@@ -38,9 +38,11 @@ class NewQuestion extends Component {
   }
 
   render() {
+    let {question, answer} = this.state
+
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
-        <TextInput 
+        <TextInput
           style={styles.textInput}
           placeholder='Question'
           onChangeText={text => this.questionHandler(text)} />
@@ -50,7 +52,10 @@ class NewQuestion extends Component {
           onChangeText={text => this.answerHandler(text)} />
 
         <View style={{flex: 0.5, alignItems: 'center'}}>
-          <TextButton onPress={this.submit} textColor={white} buttonStyle={styles.buttonStyle}>
+          <TextButton disabled={!(question.length && answer.length)} 
+            onPress={this.submit} 
+            textColor={white} 
+            buttonStyle={styles.buttonStyle}>
             Submit
           </TextButton>
         </View>

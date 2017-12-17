@@ -3,7 +3,7 @@ import { Notifications, Permissions } from 'expo'
 
 const NOTIFICATION_KEY = 'FlashCards:notifications'
 
-export function formatDeckInfo (deck) {
+export const formatDeckInfo = deck => {
   const cardsCount = Object.keys(deck.questions).length
   
   return {
@@ -12,12 +12,12 @@ export function formatDeckInfo (deck) {
   }
 }
 
-export function clearLocalNotification() {
+export const clearLocalNotification = () => {
   return AsyncStorage.removeItem(NOTIFICATION_KEY)
     .then(Notifications.cancelAllScheduledNotificationsAsync)
 }
 
-function createNotification () {
+const createNotification = () => {
   return {
     title: 'Take a Quiz',
     body: "Don't forget to take a quiz",
@@ -33,7 +33,7 @@ function createNotification () {
   }
 }
 
-export function setLocalNotification () {
+export const setLocalNotification = () => {
   AsyncStorage.getItem(NOTIFICATION_KEY)
     .then(JSON.parse)
     .then((data) => {

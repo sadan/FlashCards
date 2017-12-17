@@ -14,13 +14,24 @@ import DeckInfo from './DeckInfo'
 import { white } from '../utils/colors'
 
 class DeckList extends Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      tabBarOnPress: ({previousScene, scene, jumpToIndex}) => {
+        if(!scene.focused) {
+          jumpToIndex(scene.index)
+          navigation.state.params.refresh()
+        }
+      }
+    }
+  }
+
   state = {
     ready: false,
     decks: {},
-    refresh: false
   }
 
   componentDidMount() {
+    this.props.navigation.setParams({refresh: this.refresh})
     getDecks()
     .then(decks => {
       this.setState(() => ({
@@ -31,11 +42,9 @@ class DeckList extends Component {
   }
 
   refresh = () => {
-    this.setState({ refresh: true })
     getDecks()
     .then(decks => {
       this.setState(() => ({
-        refresh: false,
         ready: true,
         decks
       }))
@@ -44,7 +53,7 @@ class DeckList extends Component {
 
   render() {
     const { navigate } = this.props.navigation
-    const { ready, decks, refresh } = this.state
+    const { ready, decks } = this.state
 
     if (!ready) {
       return <AppLoading />
@@ -54,9 +63,6 @@ class DeckList extends Component {
       <View>
         {decks
           ? <FlatList
-              refreshControl={
-                <RefreshControl refreshing={refresh} onRefresh={this.refresh} />
-              }
               data={Object.keys(decks).map((key) => decks[key])}
               renderItem={({item}) => (
                 <TouchableOpacity style={styles.item} onPress={() => navigate(

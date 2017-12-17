@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native'
 import { AppLoading } from 'expo'
+import FlipCard from 'react-native-flip-card'
 
 import { getDeck } from '../utils/api'
 import { white } from '../utils/colors'
 import TextButton from './TextButton'
-import Question from './Question'
 import Score from './Score'
 import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 
@@ -80,10 +80,31 @@ class Quiz extends Component {
                 <Text style={{ fontSize: 20 }}>{current + 1} / {total}</Text>
               </View>
 
+              
               <View style={styles.innerContainer}>
-                <Question question={deck.questions[current]} />
+                <View style={{flex:1, justifyContent: 'center'}}>
+                  <FlipCard style={styles.flipCard}
+                    friction={8}
+                    flipHorizontal={true}
+                    flipVertical={false}
+                    clickable={true}
+                  >
+                    <View style={styles.cardContent}>
+                      <Text style={styles.cardText}>
+                        {deck.questions[current].question}
+                      </Text>
+                      <Text style={styles.cardSubText}>Answer</Text>
+                    </View>
+                    <View style={styles.cardContent}>
+                      <Text style={styles.cardText}>
+                        {deck.questions[current].answer}
+                      </Text>
+                      <Text style={styles.cardSubText}>Question</Text>
+                    </View>
+                  </FlipCard>
+                </View>
 
-                <View style={{justifyContent: 'flex-end',}}>
+                <View style={{justifyContent: 'flex-end'}}>
                   <TextButton onPress={this.onCorrect} buttonStyle={styles.correctButton} textColor={white}>
                     Correct
                   </TextButton>
@@ -91,6 +112,7 @@ class Quiz extends Component {
                     Incorrect
                   </TextButton>
                 </View>
+
               </View>
 
             </View>
@@ -109,15 +131,23 @@ class Quiz extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20
+    padding: 20,
   },
-  innerContainer: { 
-    flex:1, 
-    alignItems: 'center', 
-    paddingLeft: 20, 
-    paddingRight: 20, 
-    justifyContent: 'space-around'
+  innerContainer: {
+    padding: 20, 
+    flex: 1
   },
+  flipCard: {
+    borderWidth: 0,
+    marginBottom: 10,
+    flex: 12
+  },
+  cardContent: {
+    flex: 1, 
+    justifyContent: 'center'
+  },
+  cardText: {textAlign: 'center', fontSize: 36},
+  cardSubText: { textAlign: 'center', fontSize: 20, color: '#ff0000'},
   counter: {
     alignSelf: 'flex-start',
     flexDirection: 'row',

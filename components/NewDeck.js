@@ -34,6 +34,7 @@ class NewDeck extends Component {
 
   render() {
     let { title } = this.state
+    console.log(title.length)
 
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
@@ -44,7 +45,7 @@ class NewDeck extends Component {
           value={title}
           onChangeText={text => this.onChangeHandler(text)} 
         />
-        <TextButton onPress={this.submit} buttonStyle={styles.buttonStyle} textColor={white}>
+        <TextButton disabled={!title.length} onPress={this.submit} buttonStyle={styles.buttonStyle} textColor={white}>
           Submit
         </TextButton>
       </KeyboardAvoidingView>
